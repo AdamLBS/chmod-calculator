@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   ChmodModel _chmodModel = ChmodModel();
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Please input the chmod string"),
+            const Text("Please input the chmod string"),
             TextFormField(
               controller: _controller,
               decoration: const InputDecoration(
@@ -55,26 +55,38 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _chmodModel = ChmodModel();
-                _chmodModel!.fromString(_controller.text);
-                if (_chmodModel.toNumber() != 0) {
+                try {
+                  _chmodModel = ChmodModel();
+                  _chmodModel.fromString(_controller.text);
+                  if (_chmodModel.toNumber() != 0) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Chmod Number'),
+                          content: Text(
+                              'The chmod number is: ${_chmodModel.toNumber()}'),
+                        );
+                      },
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const AlertDialog(
+                          title: Text('Error'),
+                          content: Text('Invalid chmod string'),
+                        );
+                      },
+                    );
+                  }
+                } catch (e) {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
-                        title: const Text('Chmod Number'),
-                        content: Text(
-                            'The chmod number is: ${_chmodModel!.toNumber()}'),
-                      );
-                    },
-                  );
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('Error'),
-                        content: const Text('Invalid chmod string'),
+                      return const AlertDialog(
+                        title: Text('Error'),
+                        content: Text('Invalid chmod string'),
                       );
                     },
                   );
@@ -89,97 +101,97 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Column(
                   children: [
-                    Text("Owner"),
+                    const Text("Owner"),
                     Checkbox(
-                      value: _chmodModel?.ownerRead,
+                      value: _chmodModel.ownerRead,
                       onChanged: (value) {
                         setState(() {
-                          _chmodModel!.ownerRead = value!;
-                          _controller.text = _chmodModel!.toString();
+                          _chmodModel.ownerRead = value!;
+                          _controller.text = _chmodModel.toString();
                         });
                       },
                     ),
                     Checkbox(
-                      value: _chmodModel?.ownerWrite,
+                      value: _chmodModel.ownerWrite,
                       onChanged: (value) {
                         setState(() {
-                          _chmodModel!.ownerWrite = value!;
-                          _controller.text = _chmodModel!.toString();
+                          _chmodModel.ownerWrite = value!;
+                          _controller.text = _chmodModel.toString();
                         });
                       },
                     ),
                     Checkbox(
-                      value: _chmodModel?.ownerExecute,
+                      value: _chmodModel.ownerExecute,
                       onChanged: (value) {
                         setState(() {
-                          _chmodModel!.ownerExecute = value!;
-                          _controller.text = _chmodModel!.toString();
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(width: 20),
-                Column(
-                  children: [
-                    Text("Group"),
-                    Checkbox(
-                      value: _chmodModel?.groupRead,
-                      onChanged: (value) {
-                        setState(() {
-                          _chmodModel!.groupRead = value!;
-                          _controller.text = _chmodModel!.toString();
-                        });
-                      },
-                    ),
-                    Checkbox(
-                      value: _chmodModel?.groupWrite,
-                      onChanged: (value) {
-                        setState(() {
-                          _chmodModel!.groupWrite = value!;
-                          _controller.text = _chmodModel!.toString();
-                        });
-                      },
-                    ),
-                    Checkbox(
-                      value: _chmodModel?.groupExecute,
-                      onChanged: (value) {
-                        setState(() {
-                          _chmodModel!.groupExecute = value!;
-                          _controller.text = _chmodModel!.toString();
+                          _chmodModel.ownerExecute = value!;
+                          _controller.text = _chmodModel.toString();
                         });
                       },
                     ),
                   ],
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 20),
                 Column(
                   children: [
-                    Text("Others"),
+                    const Text("Group"),
                     Checkbox(
-                      value: _chmodModel?.othersRead,
+                      value: _chmodModel.groupRead,
                       onChanged: (value) {
                         setState(() {
-                          _chmodModel!.othersRead = value!;
-                          _controller.text = _chmodModel!.toString();
+                          _chmodModel.groupRead = value!;
+                          _controller.text = _chmodModel.toString();
                         });
                       },
                     ),
                     Checkbox(
-                      value: _chmodModel?.othersWrite,
+                      value: _chmodModel.groupWrite,
                       onChanged: (value) {
                         setState(() {
-                          _chmodModel!.othersWrite = value!;
-                          _controller.text = _chmodModel!.toString();
+                          _chmodModel.groupWrite = value!;
+                          _controller.text = _chmodModel.toString();
                         });
                       },
                     ),
                     Checkbox(
-                      value: _chmodModel?.othersExecute,
+                      value: _chmodModel.groupExecute,
                       onChanged: (value) {
                         setState(() {
-                          _chmodModel!.othersExecute = value!;
-                          _controller.text = _chmodModel!.toString();
+                          _chmodModel.groupExecute = value!;
+                          _controller.text = _chmodModel.toString();
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  children: [
+                    const Text("Others"),
+                    Checkbox(
+                      value: _chmodModel.othersRead,
+                      onChanged: (value) {
+                        setState(() {
+                          _chmodModel.othersRead = value!;
+                          _controller.text = _chmodModel.toString();
+                        });
+                      },
+                    ),
+                    Checkbox(
+                      value: _chmodModel.othersWrite,
+                      onChanged: (value) {
+                        setState(() {
+                          _chmodModel.othersWrite = value!;
+                          _controller.text = _chmodModel.toString();
+                        });
+                      },
+                    ),
+                    Checkbox(
+                      value: _chmodModel.othersExecute,
+                      onChanged: (value) {
+                        setState(() {
+                          _chmodModel.othersExecute = value!;
+                          _controller.text = _chmodModel.toString();
                         });
                       },
                     ),
